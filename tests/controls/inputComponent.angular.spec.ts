@@ -272,7 +272,7 @@ describe('[InputComponent]', () => {
                 });
             });
         });
-        describe('and field is left with empty', () => {
+        describe('and field is left empty', () => {
             beforeEach(() => {
                 component.onValueChange('');
                 component.onLeave();
@@ -287,6 +287,58 @@ describe('[InputComponent]', () => {
             it('no validation error exists', () => {
                 expect(component.validationErrorState).toEqual(validationErrorStates.NoError);
             })
+        });
+    });
+
+    describe('When initialized with a negative amount', () => {
+        beforeEach(() => {
+            component.type = 'amount';
+            component.value = -32.5;
+            component.ngOnInit();
+            fixture.detectChanges();
+            spyOn(component.valueChanged, 'emit');
+        });
+        it('display value is -32,50', () => {
+            expect(component.displayValue).toEqual('−32,50');
+        });
+        describe('and field is left without changes', () => {
+            beforeEach(() => {
+                component.onLeave();
+                fixture.detectChanges();
+            });
+            it('32,50 is displayed', () => {
+                expect(component.displayValue).toBe('−32,50');
+            });
+            it('a value change event is emitted with an unchanged value', () => {
+                expect(component.valueChanged.emit).toHaveBeenCalledWith(-32.5);
+            });
+            it('and field is valid', () => {
+                expect(component.validationErrorState).toBe(validationErrorStates.NoError);
+            });
+        });
+    });
+
+    describe('When zero is entered', () => {
+        beforeEach(() => {
+            component.type = 'amount';
+            component.ngOnInit();
+            component.onValueChange('0');
+        });
+        describe('and field is left', () => {
+            beforeEach(() => {
+                spyOn(component.valueChanged, 'emit');
+                component.onLeave();
+                fixture.detectChanges();
+            });
+            it('0,00 is displayed', () => {
+                expect(component.displayValue).toBe('0,00');
+            });
+            it('a value change event is emitted with an unchanged value', () => {
+                expect(component.valueChanged.emit).toHaveBeenCalledWith(0);
+            });
+            it('and field is valid', () => {
+                expect(component.validationErrorState).toBe(validationErrorStates.NoError);
+            });
         });
     });
 
