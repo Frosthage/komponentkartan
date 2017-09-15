@@ -1,9 +1,10 @@
 {
   "name": "vgr-komponentkartan",
-  "version": "0.0.67",
+  "version": "0.0.68",
   "author": "Västra Götalandsregionen",
   "scripts": {
-    "[start-app]": "concurrent \"npm run _watch-ts\" \"npm run _local-webserver\" \"npm run _watch-css\" \"npm run _watch-demo-app-css\"",
+    "start": "concurrent \"npm run _watch-ts\" \"npm run _local-webserver\" \"npm run _watch-css\" \"npm run _watch-demo-app-css\"",
+
     "_compile-ts": "tsc -p tsconfig.demo-app.json",
     "_watch-ts": "tsc -p tsconfig.demo-app.json -w",
     "_local-webserver": "lite-server",
@@ -11,7 +12,8 @@
     "_compile-demo-app-css": "node-sass --include-path content demo-app/content/demo-app.scss demo-app/content/demo-app.css",
     "_watch-css": "nodemon -e scss --watch content/  --exec \"npm run _compile-css\"",
     "_watch-demo-app-css": "nodemon -e scss --watch demo-app/content/ --watch content/  --exec \"npm run _compile-demo-app-css\"",
-    "_clean_build_output": "rimraf ./BuildOutput"
+    "_clean_build_output": "rimraf ./BuildOutput",
+    "test-ci": "karma start ./karma.conf.server.js"
   },
   "dependencies": {
     "@angular/common": "^4.3.1",
@@ -52,9 +54,13 @@
     "karma-coverage-istanbul-reporter": "^1.2.1",
     "karma-jasmine": "~1.1.0",
     "karma-jasmine-html-reporter": "^0.2.2",
+    "karma-phantomjs-launcher": "^1.0.4",
+    "karma-spec-reporter": "0.0.31",
+    "karma-typescript": "^3.0.5",
     "lite-server": "^2.2.2",
     "node-sass": "~4.5.0",
     "nodemon": "^1.11.0",
+    "phantomjs-prebuilt": "^2.1.15",
     "protractor": "~5.1.2",
     "rimraf": "2.6.1",
     "task-runner-js": "^2.1.4",

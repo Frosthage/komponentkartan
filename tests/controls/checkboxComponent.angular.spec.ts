@@ -26,7 +26,7 @@ describe('SaveCancelComponent', () => {
 
         TestBed.overrideComponent(CheckboxComponent, {
             set: {
-                templateUrl: 'checkbox.component.html'
+                templateUrl: './checkbox.component.html'
             }
         });
 
@@ -179,12 +179,5 @@ describe('SaveCancelComponent', () => {
             expect(checkboximage.attributes['aria-checked']).toBe('false');
         });
 
-        it('If the presentation includes additional descriptive static text relevant to a checkbox or checkbox group, the checkbox or checkbox group has the property aria- describedby set to the ID of the element containing the description', () => {
-
-        });
-
-        it('If a set of checkboxes is presented as a logical group with a visible label, the checkboxes are included in an element with role group that has the property aria- labelledby set to the ID of the element containing the label', () => {
-
-        });
     });
 });

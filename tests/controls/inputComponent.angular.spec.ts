@@ -30,7 +30,8 @@ import {
 } from '../../component-package/models/validated.model';
 import { TruncatePipe } from '../../component-package/pipes/truncatePipe';
 
-import 'npm:intl/locale-data/jsonp/se-SE.js';
+import 'intl/locale-data/jsonp/se-SE.js';
+
 
 describe('[InputComponent]', () => {
     let component: InputComponent;
@@ -373,6 +374,35 @@ describe('[InputComponent]', () => {
         });
     });
 
+
+    describe('When amount with three digits is entered', () => {
+        beforeEach(() => {
+            component.type = 'amount';
+            component.ngOnInit();
+            component.onValueChange('125,106');
+        });
+        describe('and field is left', () => {
+            beforeEach(() => {
+                spyOn(component.valueChanged, 'emit');
+                component.onLeave();
+                fixture.detectChanges();
+            });
+            it('125,11 is displayed', () => {
+                expect(component.displayValue).toBe('125,11');
+            });
+            it('value is 125,11', () => {
+                expect(component.value).toBe(125.11);
+            });
+            it('a value change event is emitted with formatted value', () => {
+                expect(component.valueChanged.emit).toHaveBeenCalledWith(125.11);
+            });
+            it('and field is valid', () => {
+                expect(component.validationErrorState).toBe(validationErrorStates.NoError);
+            });
+        });
+    });
+
+
     describe('When initialized with a valid amount', () => {
         beforeEach(() => {
             component.type = 'amount';
@@ -438,9 +468,5 @@ describe('[InputComponent]', () => {
             });
         });
     });
-
-
-
-
 });
 

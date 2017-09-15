@@ -160,6 +160,16 @@ Task("Build-TypescriptAndSass")
 });
 
 
+Task("Run-Jasmine-Tests")
+.IsDependentOn("Build-TypescriptAndSass")
+.Does(() =>
+{
+	NpmRunScript(new NpmRunScriptSettings
+    {
+        ScriptName = "test-ci",
+        WorkingDirectory = "./"
+    });
+});
 
 Task("Move-TypescriptAndSass")
 .IsDependentOn("Build-TypescriptAndSass")
@@ -179,6 +189,7 @@ Task("Build-Frontend")
 	.IsDependentOn("Build-TypescriptAndSass")
 	.IsDependentOn("Move-TypescriptAndSass")
 	.IsDependentOn("Build-Npm-Frontend-Packages")
+	.IsDependentOn("Run-Jasmine-Tests")
 	.Does(() => {
         CopyFiles("./component-package/**/*.*", "./BuildOutput/component-package", true);
         CopyFiles("./demo-app/**/*.*", "./BuildOutput/demo-app", true);
